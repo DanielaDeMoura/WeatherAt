@@ -18,7 +18,7 @@ searchForm.on('submit', function (event) {
     // Clear input field
     searchInput.val('');
 
-    // Call the function to get weather data
+    // calling function to get weather data
     getWeatherData(cityName);
   }
 });
