@@ -1,4 +1,4 @@
-.five-day-card {
+#five-day-card {
   position: relative;
   width: 20%;
   padding-right: 15px;
@@ -34,7 +34,6 @@
 }
 
 .search-button {
-  /* text-align: inherit; */
   margin: 0.5rem;
   width: 100%;
   background-color: #5098e6;

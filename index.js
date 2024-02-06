@@ -1,5 +1,5 @@
-
-const apiKey = '6addef4aa4d6aacc4a813506e4afcb86';
+// Constants
+const apiKey = '7e9bce1c6613684f42c71ee932e5a23a';
 const apiUrl = 'https://api.openweathermap.org/data/2.5/forecast';
 
 // DOM Elements
@@ -26,7 +26,7 @@ searchForm.on('submit', function (event) {
 // Function to get weather data
 function getWeatherData(cityName) {
   // call API
-  const apiUrlWithParams = `${apiUrl}?q=${cityName}&appid=${apiKey}`;
+  const apiUrlWithParams = `${apiUrl}?q=${cityName}&appid=${apiKey}&units=metric`;
 
   fetch(apiUrlWithParams)
     .then(response => response.json())
@@ -48,7 +48,7 @@ function displayWeatherData(data) {
   // extract info
   const city = data.city.name;
   const currentDate = dayjs().format('MMMM D, YYYY');
-  const temperature = data.list[0].main.temp;
+  var temperature = data.list[0].main.temp;
   const humidity = data.list[0].main.humidity;
   const windSpeed = data.list[0].wind.speed;
   const iconCode = data.list[0].weather[0].icon;
@@ -56,15 +56,34 @@ function displayWeatherData(data) {
   // update with todays weather
   todaySection.html(`
     <h2>${city} (${currentDate})</h2>
-    <p>Temperature: ${temperature}°F</p>
+    <p>Temperature: ${temperature}°C</p>
     <p>Humidity: ${humidity}%</p>
     <p>Wind Speed: ${windSpeed} MPH</p>
     <img src="https://openweathermap.org/img/w/${iconCode}.png" alt="Weather Icon">
   `);
 
-  // 5-day forecast
-  forecastSection.html(`
-  `);
+  // Extract forecast data
+  const forecastData = data.list.slice(1); // Exclude current day from forecast
+
+  // update the UI for the 5-day forecast
+  forecastSection.html('');
+  forecastData.forEach(dayData => {
+    const date = dayjs(dayData.dt_txt).format('MMMM D, YYYY');
+    const iconCode = dayData.weather[0].icon;
+    const temperature = dayData.main.temp;
+    const humidity = dayData.main.humidity;
+
+    const forecastItem = `
+      <div class="col-md-2 forecast-item bg-secondary text-white p-3 m-2">
+        <h3>${date}</h3>
+        <img src="https://openweathermap.org/img/w/${iconCode}.png" alt="Weather Icon">
+        <p>Temperature: ${temperature}°C</p>
+        <p>Humidity: ${humidity}%</p>
+      </div>
+    `;
+
+    forecastSection.append(forecastItem);
+  });
 }
 
 // Function to update the search history
@@ -92,7 +111,6 @@ function displaySearchHistory(history) {
     historyList.append(historyItem);
   });
 }
-
 
 function init() {
   // Load search history in localStorage
