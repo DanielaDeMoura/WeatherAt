@@ -1,4 +1,3 @@
-// Constants
 const apiKey = '7e9bce1c6613684f42c71ee932e5a23a';
 const apiUrl = 'https://api.openweathermap.org/data/2.5/forecast';
 
@@ -48,7 +47,7 @@ function displayWeatherData(data) {
   // extract info
   const city = data.city.name;
   const currentDate = dayjs().format('MMMM D, YYYY');
-  var temperature = data.list[0].main.temp;
+  const temperature = data.list[0].main.temp;
   const humidity = data.list[0].main.humidity;
   const windSpeed = data.list[0].wind.speed;
   const iconCode = data.list[0].weather[0].icon;
